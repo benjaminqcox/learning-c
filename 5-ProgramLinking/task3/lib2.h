@@ -1,0 +1,1 @@
+void lib2fun1();
