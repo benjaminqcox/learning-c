@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include "lib1.h"
 
 void lib1fun1()
 {
-    printf("This is function 1 in library 1.\n");
+    printf("Library 1, function 1.\n");
 }

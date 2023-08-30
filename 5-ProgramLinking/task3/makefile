@@ -1,11 +1,11 @@
 all: driver
 
 driver: driver.out libs
-	gcc -o driver driver.out -L. lib1.a lib2.a
+	gcc driver.out -o driver -L. lib1.a lib2.a
 
 driver.out: driver.c
 	gcc -c driver.c -o driver.out
-
+	
 lib1.out: lib1.c
 	gcc -c lib1.c -o lib1.out
 	
