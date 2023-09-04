@@ -1,4 +1,8 @@
 // Single Linked List Operations (SLLO)
+#include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
+
 #include "singleLLO.h"
 
 node_t * createEmptyNode()

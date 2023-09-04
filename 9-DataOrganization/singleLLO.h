@@ -1,7 +1,4 @@
 // Single Linked List Operations (SLLO)
-#include <stdio.h>
-#include <stddef.h>
-#include <stdlib.h>
 
 typedef struct node
 {
