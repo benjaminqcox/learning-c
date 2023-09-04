@@ -149,6 +149,7 @@ void updateNodeByValue(node_t * head, int data, int newData)
     node->data = newData;
 }
 
+// CHANGE THIS TO DOUBLE POINTER TO SIMPLIFY FUNCTION (WON'T NEED TO DEAL WITH RETURNING HEAD IF POS 0 IS CHANGED)
 void insertNodeAtPosition(node_t * head, node_t * node, int position)
 {
     // If the position chosen is 0, the root node just needs to be linked to the node being inserted

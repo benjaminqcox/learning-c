@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "singleLLO.h"
 
 int main()
@@ -16,9 +17,10 @@ int main()
     printf("END OF BEFORE CHANGES\n\n\nSTART OF AFTER CHANGES\n");
 
     // Add a node at position 10 to store the value of 55 -> 9: 55
-    insertNodeAtPosition(root, createNode(55), 10);
+    insertNodeAtPosition(root, createNode(55), 0);
     // Remove node at position 3 -> 0: 25, 1, 26, 2: 28, 3:...
     // The root node is returned here to account for if the user chooses to remove node 0
+    // ^ I now understand that this is a case where a double pointer would greatly simplify my code
     root = removeNodeByPosition(root, 3);
     // Update node with the value of 33 to store the value 420 -> 8: 420
     updateNodeByValue(root, 33, 420);
@@ -28,6 +30,7 @@ int main()
     updateNodeByPosition(root, 6, 150);
     // Output these results and confirm they are correct
     printLinkedList(root);
+
 
     // Test the output of grabbing specific nodes rather than updating root
     printf("Node value at position %d: %d\n", 4, getNodeByPosition(root, 4)->data);
