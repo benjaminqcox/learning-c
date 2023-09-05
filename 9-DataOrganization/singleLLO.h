@@ -1,31 +1,31 @@
 // Single Linked List Operations (SLLO)
 
-typedef struct node
+typedef struct sllNode
 {
     int data;
-    struct node *next;
-} node_t;
+    struct sllNode *next;
+} sllNode;
 
-node_t * createEmptyNode();
+sllNode * createEmptySllNode();
 
-node_t * createNode(int data);
+sllNode * createSllNode(int data);
 
-void addNode(node_t * head, int data);
+void addSllNode(sllNode * head, int data);
 
-node_t * getNodeByValue(node_t * head, int data);
+sllNode * getSllNodeByValue(sllNode * head, int data);
 
-node_t * getNodeByPosition(node_t * head, int position);
+sllNode * getSllNodeByPosition(sllNode * head, int position);
 
-void destroyLinkedList(node_t ** head_ref);
+void destroySll(sllNode ** head_ref);
 
-node_t * removeNodeByPosition(node_t * head, int position);
+void removeSllNodeByPosition(sllNode ** head, int position);
 
-void updateNodeByPosition(node_t * head, int position, int data);
+void updateSllNodeByPosition(sllNode * head, int position, int data);
 
-void updateNodeByValue(node_t * head, int value, int data);
+void updateSllNodeByValue(sllNode * head, int value, int data);
 
-void insertNodeAtPosition(node_t * head, node_t * node, int position);
+void insertSllNodeAtPosition(sllNode * head, sllNode * SllNode, int position);
 
-void replaceNodeAtPosition(node_t * head, int position, node_t * node);
+void replaceSllNodeAtPosition(sllNode ** head, int position, sllNode * SllNode);
 
-void printLinkedList(node_t * head);
+void printSll(sllNode * head);

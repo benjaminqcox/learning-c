@@ -5,40 +5,40 @@
 
 #include "singleLLO.h"
 
-node_t * createEmptyNode()
+sllNode * createEmptySllNode()
 {
-    // Create a temporary node and allocate it to have memory space equal to that of the node_t struct memory
-    // node_t -> int data; node * next; -> integer + pointer (integer) -> 8bytes
-    node_t * temp;
-    temp = (node_t*)malloc(sizeof(node_t));
+    // Create a temporary SllNode and allocate it to have memory space equal to that of the sllNode struct memory
+    // sllNode -> int data; SllNode * next; -> integer + pointer (integer) -> 8bytes
+    sllNode * temp;
+    temp = (sllNode*)malloc(sizeof(sllNode));
     if (temp == NULL)
     {
         // If the memory could not be allocated correctly, fail gracefully
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
-    // Set the value of the linked node to null rather than a random address
+    // Set the value of the linked SllNode to null rather than a random address
     // This will act as the stop condition in the linked list search
     temp->next = NULL; // Effectively the same as doing (*temp).next = NULL;
     return temp;
 }
 
-node_t * createNode(int data)
+sllNode * createSllNode(int data)
 {
-    // Make an empty node and fill in the data
+    // Make an empty SllNode and fill in the data
     // Turns a common 2 step functionality into a single step
-    node_t * temp = createEmptyNode();
+    sllNode * temp = createEmptySllNode();
     temp->data = data;
     return temp;
 }
 
-void addNode(node_t * head, int data)
+void addSllNode(sllNode * head, int data)
 {
-    // Create a node and add it to the end of the linked list
-    node_t * temp = createNode(data);
-    node_t * p = head;
+    // Create a SllNode and add it to the end of the linked list
+    sllNode * temp = createSllNode(data);
+    sllNode * p = head;
 
-    // while there is still another node in the linked list, grab it
+    // while there is still another SllNode in the linked list, grab it
     // p is used here so the reference to head is not lost. p and head share
     // the same children references so values updated in p are updated in head
     while (p->next != NULL)
@@ -46,18 +46,18 @@ void addNode(node_t * head, int data)
         p = p->next;
     }
 
-    // This will add the node to the end of head
+    // This will add the SllNode to the end of head
     p->next = temp;
 }
 
-node_t * getNodeByValue(node_t * head, int data)
+sllNode * getSllNodeByValue(sllNode * head, int data)
 {
     // Create a copy of head to iterate over
-    node_t * p = head;
+    sllNode * p = head;
 
     while (p->next != NULL)
     {
-        // while there are still nodes in the linked list, check if it matches the data argument
+        // while there are still SllNodes in the linked list, check if it matches the data argument
         // return this element if it does
         if (p->data == data) return p;
         p = p->next;
@@ -65,38 +65,38 @@ node_t * getNodeByValue(node_t * head, int data)
     
     // NULL returned here rather than head so the user knows there is no confusion as to why the value does not match
     // (if head was returned, it seems as though the value was found)
-    printf("No node found with a value of: %d", data);
+    printf("No SllNode found with a value of: %d", data);
     return NULL;
 }
 
-node_t * getNodeByPosition(node_t * head, int position)
+sllNode * getSllNodeByPosition(sllNode * head, int position)
 {
     int counter = 0;
-    node_t * current = head;
+    sllNode * current = head;
 
     while (current != NULL)
     {
-        // while there are still nodes in the linked list check if the counter is the same as the position requested
-        // counter increments every time a new node is checked
+        // while there are still SllNodes in the linked list check if the counter is the same as the position requested
+        // counter increments every time a new SllNode is checked
         if(counter++ == position) return current;
         current = current->next;
     }
-    // current == null on the final node, so this may be the node the user was requesting
+    // current == null on the final SllNode, so this may be the SllNode the user was requesting
     if(counter == position) return current;
 
     // NULL returned here rather than head so the user knows there is no confusion as to why the value does not match
     // (if head was returned, it seems as though the value was found)
-    printf("No node found in position: %d\nThere are only %d nodes in the linked list.", position, counter);
+    printf("No SllNode found in position: %d\nThere are only %d SllNodes in the linked list.", position, counter);
     return NULL;
 }
 
-void destroyLinkedList(node_t ** head_ref)
+void destroySll(sllNode ** head_ref)
 {
     // Starting with the head reference loop through each of its children
     // for each child store its child and then clear the memory of the parent
     // do this until there are no children left
-    node_t * current = *head_ref;
-    node_t * next;
+    sllNode * current = *head_ref;
+    sllNode * next;
     while(current != NULL)
     {
         next = current->next;
@@ -107,86 +107,83 @@ void destroyLinkedList(node_t ** head_ref)
     *head_ref = NULL;
 }
 
-node_t * removeNodeByPosition(node_t * head, int position)
+void removeSllNodeByPosition(sllNode ** head, int position)
 {
     // if the chosen position to remove is 0, the head is replaced by its child if it has a child
-    // if it does not have a child, then the newHead will be set to NULL and this is returned
+    // if it does not have a child, then the newHead will be set to NULL
     if (position == 0)
     {
-        node_t * newHead = head->next;
-        free(head);
-        head = NULL;
-        if (newHead == NULL) printf("You have deleted the root node, NULL will be returned.");
-        return newHead;
+        sllNode * origHead = *head;
+        *head = (*head)->next;
+        free(origHead);
+        origHead = NULL;
+        if (*head == NULL) printf("You have deleted the root SllNode.");
+        return;
     }
-    // find the position of the parent to the node we are searching for
-    node_t * previous = getNodeByPosition(head, --position);
-    // find the child to the node we are removing
-    node_t * toRemove = previous->next;
-    // if the node we are removing has a child, relink it
+    // find the position of the parent to the SllNode we are searching for
+    sllNode * previous = getSllNodeByPosition(*head, --position);
+    // find the child to the SllNode we are removing
+    sllNode * toRemove = previous->next;
+    // if the SllNode we are removing has a child, relink it
     if (toRemove->next != NULL)
     {
-        // set the child of the node we are removing to the child of the parent of the node we are removing
+        // set the child of the SllNode we are removing to the child of the parent of the SllNode we are removing
         previous->next = toRemove->next;
         // clear the memory of the unlinked child
         free(toRemove);
         toRemove = NULL;
     }
-    return head;
 }
 
-void updateNodeByPosition(node_t * head, int position, int newData)
+void updateSllNodeByPosition(sllNode * head, int position, int newData)
 {
-    // Find the node we want to update based on its position index and change the data stored in it
-    node_t * node = getNodeByPosition(head, position);
-    node->data = newData;
+    // Find the SllNode we want to update based on its position index and change the data stored in it
+    sllNode * SllNode = getSllNodeByPosition(head, position);
+    SllNode->data = newData;
 }
 
-void updateNodeByValue(node_t * head, int data, int newData)
+void updateSllNodeByValue(sllNode * head, int data, int newData)
 {
-    // Find the node we want to update based on its stored value and change the data stored in it
-    node_t * node = getNodeByValue(head, data);
-    node->data = newData;
+    // Find the SllNode we want to update based on its stored value and change the data stored in it
+    sllNode * SllNode = getSllNodeByValue(head, data);
+    SllNode->data = newData;
 }
 
-// CHANGE THIS TO DOUBLE POINTER TO SIMPLIFY FUNCTION (WON'T NEED TO DEAL WITH RETURNING HEAD IF POS 0 IS CHANGED)
-void insertNodeAtPosition(node_t * head, node_t * node, int position)
+void insertSllNodeAtPosition(sllNode * head, sllNode * SllNode, int position)
 {
-    // If the position chosen is 0, the root node just needs to be linked to the node being inserted
+    // If the position chosen is 0, the root SllNode just needs to be linked to the SllNode being inserted
     if (position == 0)
     {
-        node->next = head;
+        SllNode->next = head;
         return;
     }
 
-    // Get the parent node to the chosen position
-    node_t * shift = getNodeByPosition(head, --position);
-    // Make a copy of the chosen node
-    node_t * temp = shift->next;
-    if (temp->next != NULL)
+    // Get the parent SllNode to the chosen position
+    sllNode * shift = getSllNodeByPosition(head, --position);
+    if (shift->next != NULL)
     {
-        // If the chosen position is not the final node, set its child to the next node
-        node->next = temp->next;
+        // If the chosen position is not the final SllNode, set its child to the next SllNode
+        SllNode->next = shift->next;
     }
     else
     {
-        // If the chosen position is the final node, create 
-        node->next = createEmptyNode();
+        // If the chosen position is the final SllNode, create 
+        SllNode->next = createEmptySllNode();
     }
-    // set the child of the parent to the chosen node
-    shift->next = node;
+    // set the child of the parent to the chosen SllNode
+    shift->next = SllNode;
 }
 
-void replaceNodeAtPosition(node_t * head, int position, node_t * node)
+void replaceSllNodeAtPosition(sllNode ** head, int position, sllNode * SllNode)
 {
-    removeNodeByPosition(head, position);
-    insertNodeAtPosition(head, node, position);
+    removeSllNodeByPosition(head, position);
+    insertSllNodeAtPosition(*head, SllNode, position);
 }
 
-void printLinkedList(node_t * head)
+void printSll(sllNode * head)
 {
-    // Go through each node starting from the root node and print the position index and the value stored in it
-    node_t * current = head;
+    // Go through each SllNode starting from the root SllNode and print the position index and the value stored in it
+    sllNode * current = head;
     int counter = 0;
     while(current != NULL)
     {
